@@ -1,5 +1,5 @@
 // frontend/js/api.js
-export const API = "http://127.0.0.1:8001";
+const API_URL = "https://playlife-api.onrender.com";
 
 export async function apiGet(url) {
   const r = await fetch(url);
