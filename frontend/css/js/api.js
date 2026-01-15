@@ -1,36 +1,36 @@
-// frontend/css/js/api.js
-const API_URL = "https://playlife-api.onrender.com";
+// assets/js/api.js
+// Playlife - API helper (PRODUÇÃO)
 
-// monta URL final corretamente
-function buildUrl(url) {
-  if (url.startsWith("http://") || url.startsWith("https://")) return url;
-  if (!url.startsWith("/")) url = "/" + url;
-  return API_URL + url;
+export const API = "https://playlife-api.onrender.com";
+
+// GET genérico
+export async function apiGet(path) {
+  if (!path.startsWith("/")) path = "/" + path;
+
+  const res = await fetch(API + path);
+  if (!res.ok) {
+    let body = "";
+    try { body = await res.text(); } catch {}
+    throw new Error(`HTTP ${res.status} - ${body || "Erro ao buscar dados"}`);
+  }
+  return await res.json();
 }
 
-export async function apiGet(url) {
-  const r = await fetch(buildUrl(url));
-  if (!r.ok) throw new Error("Erro API: " + r.status);
-  return await r.json();
-}
+// POST genérico
+export async function apiPost(path, payload = {}) {
+  if (!path.startsWith("/")) path = "/" + path;
 
-export async function apiPost(url, body = null) {
-  const opt = {
+  const res = await fetch(API + path, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-  };
-  if (body !== null) opt.body = JSON.stringify(body);
+    body: JSON.stringify(payload),
+  });
 
-  const r = await fetch(buildUrl(url), opt);
-
-  if (!r.ok) {
-    let msg = "Erro API: " + r.status;
-    try {
-      const j = await r.json();
-      msg = j.detail || msg;
-    } catch {}
-    throw new Error(msg);
+  if (!res.ok) {
+    let body = "";
+    try { body = await res.text(); } catch {}
+    throw new Error(`HTTP ${res.status} - ${body || "Erro ao enviar dados"}`);
   }
 
-  return await r.json();
+  return await res.json();
 }
