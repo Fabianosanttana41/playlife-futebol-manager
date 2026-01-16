@@ -347,6 +347,25 @@ if (btnConfronto) {
   });
 }
 
+// ==== START / TELA PRINCIPAL ====
+const screenMain = document.getElementById("screenMain");
+const screenClube = document.getElementById("screenClube");
+const btnEntrar = document.getElementById("btnEntrar");
+
+function showScreen(name){
+  screenMain.style.display = (name==="main") ? "flex" : "none";
+  screenClube.style.display = (name==="clube") ? "block" : "none";
+}
+
+btnEntrar?.addEventListener("click", () => {
+  showScreen("clube");
+});
+
+
+
+
+
+
 // ================================
 // INIT
 // ================================
